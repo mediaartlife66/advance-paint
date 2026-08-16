@@ -169,5 +169,64 @@
 
   <script src="app.js"></script>
   <script src="modules.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("photo-file-input");
+  const preview = document.getElementById("photo-preview-grid");
+  const dropZone = document.getElementById("drag-drop-zone");
+
+  if (!input || !preview || !dropZone) {
+    console.error("APA upload elements not found");
+    return;
+  }
+
+  function showPhotos(files) {
+    preview.innerHTML = "";
+
+    Array.from(files).forEach(function (file) {
+      if (!file.type.startsWith("image/")) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        const img = document.createElement("img");
+
+        img.src = event.target.result;
+        img.alt = file.name;
+
+        img.style.width = "100%";
+        img.style.height = "180px";
+        img.style.objectFit = "cover";
+        img.style.borderRadius = "12px";
+        img.style.display = "block";
+
+        preview.appendChild(img);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  input.addEventListener("change", function () {
+    showPhotos(input.files);
+  });
+
+  dropZone.addEventListener("dragover", function (event) {
+    event.preventDefault();
+    dropZone.style.opacity = "0.7";
+  });
+
+  dropZone.addEventListener("dragleave", function () {
+    dropZone.style.opacity = "1";
+  });
+
+  dropZone.addEventListener("drop", function (event) {
+    event.preventDefault();
+    dropZone.style.opacity = "1";
+
+    showPhotos(event.dataTransfer.files);
+  });
+});
+</script> 
 </body>
 </html>
