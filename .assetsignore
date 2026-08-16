@@ -1,0 +1,8 @@
+.git/
+.git/**
+.github/
+.github/**
+CLAUDE_CATCHUP.md
+README.md
+wrangler.toml
+worker.js
