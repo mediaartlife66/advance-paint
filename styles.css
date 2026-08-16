@@ -1,0 +1,84 @@
+:root {
+  --bg-deep-navy: #0B132B;
+  --bg-card: #111C3A;
+  --text-white: #FFFFFF;
+  --text-muted: #8F9CAE;
+  --teal-primary: #00B4D8;
+  --emerald-success: #06D6A0;
+  --cyan-accent: #90E0EF;
+  --border-glow: rgba(0, 180, 216, 0.15);
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-deep-navy);
+  color: var(--text-white);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+.ag-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ag-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(400px circle at var(--glow-x, 0) var(--glow-y, 0), rgba(0, 180, 216, 0.06), transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ag-card:hover {
+  border-color: var(--teal-primary);
+  box-shadow: 0 0 25px var(--border-glow);
+  transform: translateY(-2px);
+}
+
+.ag-btn-primary {
+  background: var(--teal-primary);
+  color: var(--bg-deep-navy);
+  font-weight: 600;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.ag-btn-primary:hover { opacity: 0.9; }
+
+.ag-btn-secondary {
+  background: transparent;
+  color: var(--text-white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ag-btn-secondary:hover { background: rgba(255, 255, 255, 0.05); }
+
+.badge { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
+.badge-active { background: rgba(6, 214, 160, 0.15); color: var(--emerald-success); }
+.badge-running { background: rgba(0, 180, 216, 0.15); color: var(--cyan-accent); }
+.badge-ok { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); }
+
+.fade-in-view { animation: viewTransition 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes viewTransition {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

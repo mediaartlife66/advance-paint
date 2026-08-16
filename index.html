@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advance Paint MVP | Premium AI Home Intelligence</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .client-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .client-nav-links { display: flex; gap: 24px; list-style: none; }
+    .client-nav-links a { color: var(--text-muted); text-decoration: none; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+    .client-nav-links a:hover, .client-nav-links a.active { color: var(--text-white); }
+    .client-nav-links a.active { border-bottom: 2px solid var(--teal-primary); padding-bottom: 6px; }
+    .page-wrapper { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .form-group label { font-size: 0.85rem; color: var(--text-muted); }
+    .form-control { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 6px; color: #FFFFFF; font-family: inherit; }
+    .form-control:focus { outline: none; border-color: var(--teal-primary); }
+  </style>
+</head>
+<body>
+
+  <header class="client-header">
+    <div style="font-weight: 700; font-size: 1.35rem; letter-spacing: 0.5px;">ADVANCE <span style="color: var(--teal-primary)">PAINT</span></div>
+    <ul class="client-nav-links">
+      <li><a data-route="home" class="active">Home</a></li>
+      <li><a data-route="assessment" onclick="setTimeout(initPhotoAssessment, 50)">Photo Assessment</a></li>
+      <li><a data-route="visualizer" onclick="setTimeout(initVisualizerModule, 50)">Colour Visualizer</a></li>
+      <li><a data-route="estimator">Paint Estimator</a></li>
+      <li><a data-route="report">AI Property Report</a></li>
+      <li><a data-route="quote">Request a Quote</a></li>
+    </ul>
+    <button class="ag-btn-secondary" style="font-size:0.85rem; padding:8px 16px;">Client Access</button>
+  </header>
+
+  <main class="page-wrapper">
+
+    <!-- PANEL 1: HOME MODULE -->
+    <div data-view-panel="home" class="fade-in-view">
+      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center; margin-top: 40px;">
+        <div>
+          <span class="badge badge-running" style="margin-bottom:12px;">MVP Platform Live</span>
+          <h1 style="font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px;">AI-Powered Spatial Paint Analysis.</h1>
+          <p style="color: var(--text-muted); font-size: 1.15rem; margin-bottom: 32px; max-width: 540px;">Experience precise New Zealand structural color assessment workflows powered by the Advance Group APA computer-vision platform.</p>
+          <button class="ag-btn-primary" onclick="switchActiveView('assessment'); setTimeout(initPhotoAssessment, 50);">Begin Residential Assessment</button>
+        </div>
+        <div class="ag-card" style="padding: 40px; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">🇳🇿</div>
+          <h3>Localised NZ Standards</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">Calibrated for structural environment weather conditions across advancepaint.co.nz portals.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: PHOTO ASSESSMENT MODULE -->
+    <div data-view-panel="assessment" style="display: none;">
+      <h2>Step 1: Property Image Extraction & Assessment</h2>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:32px; margin-top:24px;">
+        <div>
+          <div id="drag-drop-zone" class="ag-card" style="border-style:dashed; padding:60px; text-align:center; cursor:pointer;" onclick="document.getElementById('photo-file-input').click()">
+            <p style="color:var(--text-muted);">Drag and drop raw high-res architectural images here</p>
+            <span style="font-size:0.8rem; color:var(--teal-primary); display:block; margin-top:8px;">or click to browse local folders</span>
+            <input type="file" id="photo-file-input" multiple style="display:none;">
+          </div>
+          <div id="photo-preview-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px;"></div>
+        </div>
+        <div class="ag-card">
+          <h3 style="margin-bottom:16px;">Spatial Domain Context</h3>
+          <div class="form-group">
+            <label>Property Classification Target</label>
+            <select id="prop-type" class="form-control"><option>Residential</option><option>Commercial</option></select>
+          </div>
+          <div class="form-group">
+            <label>Application Boundary Scope</label>
+            <select id="int-ext" class="form-control"><option>Both</option><option>Interior</option><option>Exterior</option></select>
+          </div>
+          <div class="form-group">
+            <label>Specific Substrate Conditions / Structural Notes</label>
+            <textarea id="assessment-notes" class="form-control" rows="4" placeholder="Note cracks, fading, damp surfaces or custom metadata options..."></textarea>
+          </div>
+          <button class="ag-btn-primary" style="width:100%; margin-top:12px;" onclick="saveAssessmentForm()">Process Assets & Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: COLOUR VISUALIZER MODULE -->
+    <div data-view-panel="visualizer" style="display: none;">
+      <h2>Step 2: AI Digital Palette Customizer</h2>
+      <div style="display:grid; grid-template-columns: 1.3fr 0.7fr; gap:32px; margin-top:24px;">
+        <div class="ag-card" style="display:flex; align-items:center; justify-content:center; padding:12px;">
+          <canvas id="visualizer-canvas" width="600" height="400" style="background:#060A17; border-radius:8px; max-width:100%;"></canvas>
+        </div>
+        <div class="ag-card" style="display:flex; flex-direction:column; gap:20px;">
+          <div>
+            <h4 style="margin-bottom:8px;">Select Tone Profile</h4>
+            <div id="visualizer-palette" style="display:flex; gap:12px; margin-top:8px;"></div>
+          </div>
+          <div class="form-group">
+            <label>Surface Classification Layer</label>
+            <select id="vis-surface" class="form-control"><option>Walls</option><option>Trim</option><option>Ceiling</option></select>
+          </div>
+          <div class="form-group">
+            <label>Edge-Detection Selection Sensitivity Control</label>
+            <input type="range" id="vis-sensitivity" min="0" max="100" value="50" style="width:100%; accent-color:var(--teal-primary);" oninput="window.AdvancePaintState.visualizer.sensitivity = this.value">
+          </div>
+          <div style="display:flex; gap:10px; margin-top:auto;">
+            <button class="ag-btn-primary" style="flex:1;" onclick="applyVisualizerTint()">Apply Tint</button>
+            <button class="ag-btn-secondary" onclick="undoVisualizerAction()">Undo</button>
+          </div>
+          <button class="ag-btn-secondary" style="width:100%;" onclick="downloadVisualizerResult()">📥 Download Rendering File</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: PAINT ESTIMATOR MODULE -->
+    <div data-view-panel="estimator" style="display: none;">
+      <h2>Step 3: Material Volume Calculus Engine</h2>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:24px;">
+        <div class="ag-card">
+          <h3 style="margin-bottom:16px;">Dimensional Metric Scope</h3>
+          <div class="form-group">
+            <label>Total Measured Surface Area (m²)</label>
+            <input type="number" id="input-wall-area" class="form-control" placeholder="e.g. 120" oninput="runEstimatorCalculations()">
+          </div>
+          <div class="form-group">
+            <label>Application Coat Configuration</label>
+            <select id="input-coats" class="form-control" onchange="runEstimatorCalculations()"><option value="2">2 Coats (Standard)</option><option value="3">3 Coats (Deep Substrate)</option></select>
+          </div>
+        </div>
+        <div class="ag-card" style="display:flex; flex-direction:column; justify-content:center; gap:16px;">
+          <div>
+            <span style="font-size:0.85rem; color:var(--text-muted)">Calculated Fluid Mass Volume</span>
+            <h1 id="out-liters" style="color:var(--teal-primary); font-size:3rem; font-weight:800;">0 L</h1>
+          </div>
+          <div>
+            <span style="font-size:0.85rem; color:var(--text-muted)">Projected Material Cost Valuation</span>
+            <h2 id="out-cost" style="color:var(--emerald-success); font-size:2rem; font-weight:700;">$0.00 NZD</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 5: AI PROPERTY REPORT MODULE -->
+    <div data-view-panel="report" style="display: none;">
+      <h2>Step 4: APA Generated Analytics Ledger</h2>
+      <div id="ai-report-rendering-box" style="margin-top:24px;"></div>
+    </div>
+
+    <!-- PANEL 6: REQUEST A QUOTE MODULE -->
+    <div data-view-panel="quote" style="display: none;">
+      <h2>Step 5: Dispatch Request Summary Payload</h2>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:24px;">
+        <div id="quote-summary-panel"></div>
+        <div class="ag-card">
+          <form onsubmit="submitFinalQuoteRequest(event)">
+            <h3 style="margin-bottom:16px;">Contact Record Metadata</h3>
+            <div class="form-group"><label>Customer Name</label><input type="text" id="cust-name" class="form-control" required></div>
+            <div class="form-group"><label>Email Address</label><input type="email" id="cust-email" class="form-control" required></div>
+            <div class="form-group"><label>Contact Phone</label><input type="tel" id="cust-phone" class="form-control" required></div>
+            <div class="form-group"><label>Property Physical Address</label><input type="text" id="cust-addr" class="form-control" required></div>
+            <button type="submit" class="ag-btn-primary" style="width:100%; margin-top:12px;">Submit Request to API Gateway</button>
+          </form>
+          <div id="quote-api-status-banner" style="margin-top:16px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+  <script src="modules.js"></script>
+</body>
+</html>
